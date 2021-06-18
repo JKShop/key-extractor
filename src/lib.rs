@@ -1,12 +1,12 @@
 use crate::csv::read_csv;
 use crate::doc::try_read_doc;
-use calamine::Error;
+pub use calamine::Error as CalamineErr;
 
 
 pub mod csv;
 pub mod doc;
 
-pub fn try_parse_file(file_content: Vec<u8>, sheet_name: &str) -> Result<Vec<String>, Error> {
+pub fn try_parse_file(file_content: Vec<u8>, sheet_name: &str) -> Result<Vec<String>, CalamineErr> {
     let ft_inf = infer::get(&file_content);
     let ft_tm = tree_magic::from_u8(&file_content);
     log::debug!("{:?}", ft_inf);
@@ -30,7 +30,7 @@ pub fn try_parse_file(file_content: Vec<u8>, sheet_name: &str) -> Result<Vec<Str
             },
         }
     }
-    Err(Error::Msg("Unknown filetype"))
+    Err(CalamineErr::Msg("Unknown filetype"))
 }
 
 #[cfg(test)]
